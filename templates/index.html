@@ -1,0 +1,139 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 04</title>
+<link rel="stylesheet" href="/css/estilos.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div>
+    <label for="region1">Región 1:</label>
+    <input type="text" id="region1">
+    <label for="region2">Región 2:</label>
+    <input type="text" id="region2">
+    <button onclick="graficar()">Graficar</button>
+</div>
+<canvas id="grafica"></canvas>
+<script>
+    function graficar() {
+    var region1 = document.getElementById("region1").value;
+    var region2 = document.getElementById("region2").value;
+
+    fetch('/graficar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            region1: region1,
+            region2: region2
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        var ctx = document.getElementById('grafica').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: data.datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 04</title>
+<link rel="stylesheet" href="/css/estilos.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div>
+    <label for="region1">Región 1:</label>
+    <input type="text" id="region1">
+    <label for="region2">Región 2:</label>
+    <input type="text" id="region2">
+    <button onclick="graficar()">Graficar</button>
+</div>
+
+<table id="tablaRegiones">
+    <thead>
+        <tr>
+            <th>Regiones Disponibles</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Las regiones se cargarán aquí dinámicamente -->
+    </tbody>
+</table>
+
+<canvas id="grafica"></canvas>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/regiones')
+            .then(response => response.json())
+            .then(regiones => {
+                const tablaBody = document.getElementById('tablaRegiones').getElementsByTagName('tbody')[0];
+                regiones.forEach(region => {
+                    let fila = tablaBody.insertRow();
+                    let celda = fila.insertCell(0);
+                    celda.textContent = region;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    function graficar() {
+        var region1 = document.getElementById("region1").value;
+        var region2 = document.getElementById("region2").value;
+
+        fetch('/graficar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                region1: region1,
+                region2: region2
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            var ctx = document.getElementById('grafica').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: data.datasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
