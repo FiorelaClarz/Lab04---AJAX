@@ -13,6 +13,11 @@ def cargar_datos():
 def index():
     return render_template('index.html')
 
+# ir al punto 1
+@app.route('/punto1')
+def punto1():
+    return render_template('punto1.html')
+
 @app.route('/regiones', methods=['GET'])
 def regiones():
     datos = cargar_datos()
