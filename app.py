@@ -80,6 +80,15 @@ def top_10_regiones():
 
     return top_10
 
+@app.route('/grafico_arequipa')
+def grafico_arequipa():
+    datos = cargar_datos()
+    for region in datos:
+        if region['region'] == 'Arequipa':
+            fechas = [caso['date'] for caso in region['confirmed']]
+            valores = [int(caso['value']) for caso in region['confirmed']]
+            break
+    return render_template('punto4.html', fechas=json.dumps(fechas), valores=json.dumps(valores))
 
 if __name__ == '__main__':
     app.run(debug=True)
