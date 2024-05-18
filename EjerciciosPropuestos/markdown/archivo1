@@ -1,0 +1,24 @@
+# Título principal
+
+Este es un párrafo de texto regular. Puedes **enfatizar** palabras utilizando el doble asterisco o _cursiva_ utilizando guiones bajos.
+
+## Subtítulo
+
+- Puedes hacer listas
+- Con viñetas como esta
+- Y también listas numeradas:
+  1. Primer elemento
+  2. Segundo elemento
+
+### Subtítulo más pequeño
+
+Puedes agregar enlaces [como este](https://www.ejemplo.com) y mostrar imágenes ![imagen de ejemplo](https://via.placeholder.com/150).
+
+#### Subtítulo aún más pequeño
+
+También puedes agregar bloques de código:
+
+```javascript
+function saludar() {
+  console.log("¡Hola mundo!");
+}
