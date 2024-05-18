@@ -25,15 +25,8 @@ app.get("/file/:name",(req,res) => {
     const fileName = req.params.name;
     const filePath = path.join(markdownDir,fileName);
     fs.readFile(filePath,"utf8",(err,data) => {
-        try {
-            // Convertir el contenido de Markdown a HTML
-            const htmlContent = markdown.toHTML(data);
-            // Enviar el contenido HTML como respuesta
-            res.send(htmlContent);
-        } catch (error) {
-            // Error al convertir Markdown a HTML, enviar un error 500
-            res.status(500).json({ error: 'Error al convertir Markdown a HTML' });
-        }
+        const htmlContent = markdown.toHTML(data);
+        res.send(htmlContent);
     });
 });
 
