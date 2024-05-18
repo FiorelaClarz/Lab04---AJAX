@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Confirmados</title>
+<link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <a href="/">Volver a la Página Principal</a>
+    <h1>Top 10 Regiones con Más Casos Confirmados</h1>
+    <table border="1" id="totales-table">
+        <thead>
+            <tr>
+                <th>Región</th>
+                <th>Total Confirmados</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for region, total in totales %}
+            <tr>
+                <td>{{ region }}</td>
+                <td>{{ total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Total General de Casos Confirmados: <span id="total-general">0</span></h2>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let totalGeneral = 0;
+            const table = document.getElementById('totales-table');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                totalGeneral += parseInt(cells[1].innerText);
+            }
+            document.getElementById('total-general').innerText = totalGeneral;
+        });
+    </script>
+</body>
+</html>
