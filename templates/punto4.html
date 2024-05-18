@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Casos Confirmados en Arequipa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc; /* Agregado para visualización */
+        }
+        #chartContainer {
+            width: 100%;
+            height: 80vh; /* 80% de la altura de la ventana */
+        }
+        .date-labels {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Volver a la Página Principal</a>
+
+    <h1>Casos Confirmados en Arequipa</h1>
+    <div id="chartContainer" style="position: relative;">
+        <canvas id="arequipaChart"></canvas>
+        <div class="date-labels"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const fechas = JSON.parse('{{ fechas|safe }}');
+            const valores = JSON.parse('{{ valores|safe }}');
+
+            const canvas = document.getElementById('arequipaChart');
+            const ctx = canvas.getContext('2d');
+
+            function drawChart() {
+                const width = canvas.parentNode.offsetWidth;
+                const height = canvas.parentNode.offsetHeight;
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.clearRect(0, 0, width, height);
+
+                const maxValue = Math.max(...valores);
+                const minValue = Math.min(...valores);
+
+                const chartWidth = width - 100;
+                const chartHeight = height - 50;
+
+                const scaleX = chartWidth / (fechas.length - 1);
+                const scaleY = chartHeight / (maxValue - minValue);
+
+                ctx.beginPath();
+                ctx.moveTo(50, chartHeight - (valores[0] - minValue) * scaleY);
+
+                for (let i = 1; i < fechas.length; i++) {
+                    const x = 50 + i * scaleX;
+                    const y = chartHeight - (valores[i] - minValue) * scaleY;
+                    ctx.lineTo(x, y);
+                }
+
+                ctx.strokeStyle = 'blue';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Etiquetas de las fechas
+                const dateLabels = document.querySelector('.date-labels');
+                dateLabels.innerHTML = '';
+                for (let i = 0; i < fechas.length; i++) {
+                    const label = document.createElement('span');
+                    label.textContent = fechas[i];
+                    dateLabels.appendChild(label);
+                }
+
+                // Etiquetas de los ejes
+                ctx.font = '12px Arial';
+                ctx.fillStyle = 'black';
+                for (let i = minValue; i <= maxValue; i += 100) {
+                    const y = chartHeight - (i - minValue) * scaleY;
+                    ctx.fillText(i.toString(), 10, y);
+                }
+            }
+
+            // Dibujar el gráfico inicialmente
+            drawChart();
+
+            // Redibujar el gráfico cuando la ventana cambie de tamaño
+            window.addEventListener('resize', drawChart);
+        });
+    </script>
+</body>
+</html>
