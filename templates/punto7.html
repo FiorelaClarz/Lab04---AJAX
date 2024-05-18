@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 04-7</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/">Volver a la Página Principal</a>
+    <div class="container">
+        <h1>Comparar Regiones</h1>
+        <form id="formComparar">
+            <label for="region1">Región 1:</label>
+            <select id="region1"></select>
+            <label for="region2">Región 2:</label>
+            <select id="region2"></select>
+            <button type="submit">Comparar</button>
+        </form>
+        <canvas id="grafico"></canvas>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/regiones')
+                .then(response => response.json())
+                .then(data => {
+                    const region1Select = document.getElementById('region1');
+                    const region2Select = document.getElementById('region2');
+                    data.forEach(region => {
+                        const option1 = document.createElement('option');
+                        option1.value = region;
+                        option1.text = region;
+                        region1Select.appendChild(option1);
+
+                        const option2 = document.createElement('option');
+                        option2.value = region;
+                        option2.text = region;
+                        region2Select.appendChild(option2);
+                    });
+                });
+
+            document.getElementById('formComparar').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const region1 = document.getElementById('region1').value;
+                const region2 = document.getElementById('region2').value;
+
+                fetch('/graficar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ region1, region2 })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const ctx = document.getElementById('grafico').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    x: {
+                                        type: 'category',
+                                        labels: data.labels,
+                                        title: {
+                                            display: true,
+                                            text: 'Fecha'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Casos Confirmados'
+                                        },
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
