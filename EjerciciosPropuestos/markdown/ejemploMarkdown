@@ -1,0 +1,26 @@
+# Mi Página Web con Markdown
+
+## Introducción
+
+¡Bienvenido a mi página web creada con Markdown! Markdown es una forma simple y elegante de escribir contenido web sin tener que preocuparse por la sintaxis complicada del HTML.
+
+## Secciones
+
+### Sección 1
+
+Aquí puedes incluir texto, imágenes y otros elementos HTML utilizando Markdown. Por ejemplo, puedes incluir una imagen:
+
+![Imagen de ejemplo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBaPmFsEraJ-Tas8dakbq-z9yFgaBUKh3nK-2ViYXNYQ&s)
+
+### Sección 2
+
+Markdown también es genial para crear listas y tablas. Por ejemplo, puedes crear una lista de tareas pendientes:
+
+- [x] Aprender Markdown
+- [ ] Crear una página web
+- [ ] Personalizar el diseño
+
+## Conclusión
+
+¡Gracias por visitar mi página web! Espero que hayas encontrado útil esta introducción a Markdown. ¡No dudes en explorar más y experimentar con tus propias páginas web Markdown!
+

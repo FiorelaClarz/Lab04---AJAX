@@ -2,13 +2,13 @@ function verLista() {
     fetch(`/files`) 
         .then(response => response.json())
         .then(response => {
-            const ul = document.getElementById("lista");
-            ul.innerHTML = ""; 
+            const div = document.getElementById("lista");
+            div.innerHTML = ""; 
             response.files.forEach(file => {
-                const li = document.createElement("li");
-                li.textContent = file;
-                ul.appendChild(li);
-                ul.addEventListener("click", ()=> verFile(file));
+                const p = document.createElement("p");
+                p.textContent = file;
+                div.appendChild(p);
+                div.addEventListener("click", ()=> verFile(file));
             });
         })
 }
