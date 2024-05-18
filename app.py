@@ -51,10 +51,22 @@ def mostrar_grafico_todas_regiones():
     grafico_html = grafico_todas_regiones()
     return render_template('punto5.html', grafico_html=grafico_html)
 
+# ir al punto 6
+@app.route('/grafico_todas_regiones_exceptoLimaCallao')
+def mostrar_grafico_todas_regiones_exceptoLimaCallao():
+    grafico_html = grafico_todas_regiones_exceptoLimaCallao()
+    return render_template('punto6.html', grafico_html=grafico_html)
+
 # ir al punto 7
 @app.route('/comparar_regiones')
 def comparar_regiones():
     return render_template('punto7.html')
+
+# ir al punto 8
+@app.route('/grafico_todas_regiones_exceptoLimaCallao8')
+def mostrar_grafico_todas_regiones_exceptoLimaCallao8():
+    grafico_html = grafico_todas_regiones_exceptoLimaCallao()
+    return render_template('punto8.html', grafico_html=grafico_html)
 
 # Regiones
 @app.route('/regiones', methods=['GET'])
@@ -94,7 +106,7 @@ def top_10_regiones():
             for i in range(10):
                 if region[1] > top_10[i][1]:
                     top_10.insert(i, region)
-                    top_10.pop()  # Mantener el tamaño de top_10 en 10 elementos
+                    top_10.pop()  
                     break
 
     # Ordenando top_10 en orden descendente usando el método de burbuja
@@ -124,8 +136,27 @@ def grafico_todas_regiones():
 
     return fig.to_html(full_html=False, include_plotlyjs='cdn')
 
+# Función para generar el gráfico de líneas de todas las regiones
+def grafico_todas_regiones_exceptoLimaCallao():
+    datos = cargar_datos()
+    fechas = [entry['date'] for entry in datos[0]['confirmed']]  # Tomamos las fechas de la primera región
+    regiones = [region['region'] for region in datos]
+    datos_confirmados = {region['region']: [int(entry['value']) for entry in region['confirmed']] for region in datos}
 
-# Funcion que permite visualizar la comparacion de losc asos confirmados de dos regiones
+    fig = go.Figure()
+
+    for region, casos in datos_confirmados.items():
+        if region not in ["Lima", "Callao"]:
+            fig.add_trace(go.Scatter(x=fechas, y=casos, mode='lines', name=region))
+
+    fig.update_layout(title='Casos Confirmados por Región',
+                      xaxis_title='Fecha',
+                      yaxis_title='Casos Confirmados')
+
+    return fig.to_html(full_html=False, include_plotlyjs='cdn')
+
+
+# Funcion que permite visualizar la comparacion de los casos confirmados de dos regiones
 @app.route('/graficar', methods=['POST'])
 def graficar():
     datos = cargar_datos()

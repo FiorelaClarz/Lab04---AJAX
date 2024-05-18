@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 04-5</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <a href="/">Volver a la Página Principal</a>
+    {{ grafico_html|safe }}
+    <script>
+        var graficoDiv = document.getElementById('grafico');
+        Plotly.newPlot(graficoDiv, grafico_html);
+    </script>
+</body>
+
+</html>
