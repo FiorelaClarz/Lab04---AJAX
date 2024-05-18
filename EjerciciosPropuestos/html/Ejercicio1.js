@@ -8,6 +8,7 @@ function verLista() {
                 const li = document.createElement("li");
                 li.textContent = file;
                 ul.appendChild(li);
+                ul.addEventListener("click", ()=> verFile(file));
             });
         })
 }
