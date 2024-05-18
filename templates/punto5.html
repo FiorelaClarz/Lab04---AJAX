@@ -1,0 +1,65 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Casos Confirmados por Región</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .grafico {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grafico">
+        <h1>Gráfico de Casos Confirmados por Región</h1>
+        {{ grafico_html|safe }}
+    </div>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Casos Confirmados por Región</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="grafico" style="width: 800px; height: 600px;"></div>
+    {{ grafico_html|safe }}
+    <script>
+        var graficoDiv = document.getElementById('grafico');
+        Plotly.newPlot(graficoDiv, {{ grafico_html|safe }});
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Casos Confirmados por Región</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="grafico" style="width: 800px; height: 600px;"></div>
+    {{ grafico_html|safe }}
+    <script>
+        var graficoDiv = document.getElementById('grafico');
+        Plotly.newPlot(graficoDiv, grafico_html);
+    </script>
+</body>
+</html>

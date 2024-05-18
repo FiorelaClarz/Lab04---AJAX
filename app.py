@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import json
-import os
+# import os
+import plotly.graph_objs as go
 
 app = Flask(__name__)
 
@@ -89,6 +90,49 @@ def grafico_arequipa():
             valores = [int(caso['value']) for caso in region['confirmed']]
             break
     return render_template('punto4.html', fechas=json.dumps(fechas), valores=json.dumps(valores))
+
+
+# Función para generar el gráfico de líneas de todas las regiones
+# def grafico_todas_regiones():
+#     datos = cargar_datos()
+#     fechas = [entry['date'] for entry in datos[0]['confirmed']]  # Tomamos las fechas de la primera región
+#     regiones = [region['region'] for region in datos]
+#     datos_confirmados = {region['region']: [int(entry['value']) for entry in region['confirmed']] for region in datos}
+
+#     grafico_html = '<div>'
+#     for region, casos in datos_confirmados.items():
+#         grafico_html += f'<h2>{region}</h2>'
+#         grafico_html += '<ul>'
+#         for fecha, caso in zip(fechas, casos):
+#             grafico_html += f'<li>{fecha}: {caso}</li>'
+#         grafico_html += '</ul>'
+#     grafico_html += '</div>'
+
+#     return grafico_html
+
+# Función para generar el gráfico de líneas de todas las regiones
+def grafico_todas_regiones():
+    datos = cargar_datos()
+    fechas = [entry['date'] for entry in datos[0]['confirmed']]  # Tomamos las fechas de la primera región
+    regiones = [region['region'] for region in datos]
+    datos_confirmados = {region['region']: [int(entry['value']) for entry in region['confirmed']] for region in datos}
+
+    fig = go.Figure()
+
+    for region, casos in datos_confirmados.items():
+        fig.add_trace(go.Scatter(x=fechas, y=casos, mode='lines', name=region))
+
+    fig.update_layout(title='Casos Confirmados por Región',
+                      xaxis_title='Fecha',
+                      yaxis_title='Casos Confirmados')
+
+    return fig.to_html(full_html=False, include_plotlyjs='cdn')
+
+
+@app.route('/grafico_todas_regiones')
+def mostrar_grafico_todas_regiones():
+    grafico_html = grafico_todas_regiones()
+    return render_template('punto5.html', grafico_html=grafico_html)
 
 if __name__ == '__main__':
     app.run(debug=True)
