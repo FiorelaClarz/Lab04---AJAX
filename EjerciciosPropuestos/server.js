@@ -25,6 +25,15 @@ app.get("/file/:name",(req,res) => {
     });
 });
 
+app.post('/crear', (req, res) => {
+    const {name,txt } = req.body;
+    const filePath = path.join(markdownDir, name);
+
+    fs.writeFile(filePath,txt, (err) => {
+    });
+});
+
+
 app.listen(PORT,()=>{
     console.log("Servidor en el puerto 3000");
 });

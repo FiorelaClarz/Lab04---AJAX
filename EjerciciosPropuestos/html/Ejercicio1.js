@@ -1,9 +1,9 @@
 function verLista() {
-    fetch('/files') 
+    fetch(`/files`) 
         .then(response => response.json())
         .then(response => {
             const ul = document.getElementById("lista");
-            ul.innerHTML = ''; 
+            ul.innerHTML = ""; 
             response.files.forEach(file => {
                 const li = document.createElement("li");
                 li.textContent = file;
