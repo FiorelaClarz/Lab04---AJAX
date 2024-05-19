@@ -3,16 +3,69 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lab 04-5</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Lab 04-7</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
     <a href="/">Volver a la Página Principal</a>
-    {{ grafico_html|safe }}
+    <div class="container">
+        <h1>Comparar Regiones</h1>
+        <form id="formComparar">
+            <button type="submit">Comparar</button>
+        </form>
+        <canvas id="grafico"></canvas>
+    </div>
     <script>
-        var graficoDiv = document.getElementById('grafico');
-        Plotly.newPlot(graficoDiv, grafico_html);
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document.getElementById('formComparar').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+
+                fetch('/graficarTodasLasRegiones', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify()
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const ctx = document.getElementById('grafico').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    x: {
+                                        type: 'category',
+                                        labels: data.labels,
+                                        title: {
+                                            display: true,
+                                            text: 'Fecha'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Casos Confirmados'
+                                        },
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    });
+            });
+        });
     </script>
 </body>
 

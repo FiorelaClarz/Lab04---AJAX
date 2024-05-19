@@ -191,6 +191,42 @@ def graficar():
 
     return jsonify(datos_grafico)
 
+@app.route('/graficarTodasLasRegiones', methods=['POST'])
+def graficarTodasLasRegiones():
+    datos = cargar_datos()
+    regiones = [item['region'] for item in datos if item['region'] not in ['Lima', 'Callao']]
+
+    fechas = []
+    for region_data in datos:
+        for data in region_data['confirmed']:
+            if data['date'] not in fechas:
+                fechas.append(data['date'])
+    fechas.sort()
+
+    def preparar_datos(region_data):
+        datos_preparados = {fecha: None for fecha in fechas}
+        for data in region_data['confirmed']:
+            datos_preparados[data['date']] = int(data['value'])
+        return [datos_preparados[fecha] for fecha in fechas]
+
+    datasets = []
+    for region in regiones:
+        region_data = next(item for item in datos if item['region'] == region)
+        region_vals = preparar_datos(region_data)
+        datasets.append({
+            "label": region,
+            "data": region_vals,
+            "borderColor": '#' + format(int(os.urandom(1).hex(), 16) * 111111, '06x'),
+            "fill": False
+        })
+
+    datos_grafico = {
+        "labels": fechas,
+        "datasets": datasets
+    }
+
+    return jsonify(datos_grafico)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
